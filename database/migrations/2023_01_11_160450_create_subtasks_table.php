@@ -16,10 +16,13 @@ return new class extends Migration
     {
         Schema::create('subtasks', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('task_id')->constrained();
+            $table->foreignId('task_id')->constrained(
+                "tasks",
+                "id"
+            );
             $table->string('description');
             $table->date('deadline');
-            $table->boolean('status');
+            $table->boolean('status')->default(false);
             $table->timestamps();
         });
     }

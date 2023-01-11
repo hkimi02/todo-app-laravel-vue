@@ -1,6 +1,6 @@
 <?php
 
-
+use App\Http\Controllers\API\subTaskController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\itemController;
@@ -27,3 +27,10 @@ Route::prefix('/tasks')->group( function(){
     Route::put('/{id}',[itemController::class , 'update']);
     Route::delete('/{id}',[itemController::class , 'destroy']);
 });
+Route::prefix('/tasks/subtasks')->group( function(){
+    Route::get('/{id_task}', [subTaskController::class , 'index']);
+    Route::post('/{id_task}',[subTaskController::class , 'store']);
+    Route::put('/{id}',[subTaskController::class , 'update']);
+    Route::delete('/{id}',[subTaskController::class , 'destroy']);
+});
+
