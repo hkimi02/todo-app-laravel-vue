@@ -1,8 +1,9 @@
 <?php
 
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\itemController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -16,4 +17,11 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
+});
+
+Route::get('/tasks',[itemController::class , 'index']);
+Route::prefix('/task')->group( function(){
+    Route::post('/store',itemController::class,'store');
+    Route::put('/{id}',itemController::class,'update');
+    Route::delete('/{id}',itemController::class,'destroy');
 });
