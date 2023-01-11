@@ -5,7 +5,8 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Models\SubTask;
 use Illuminate\Http\Request;
-
+use App\Http\Controllers\itemController;
+use App\Models\task;
 class subTaskController extends Controller
 {
     /**
@@ -13,9 +14,12 @@ class subTaskController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        return SubTask::where('task_id', $request->task_id)->get();
+        // $task=task::find($request->id_task);
+        // $subTasks=$task->children()->get();
+        // return $subTasks;
     }
 
     /**
@@ -26,7 +30,12 @@ class subTaskController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $task=task::find($request->task_id);
+        $subTask=$task->children()->create([
+            'description'=>$request->description,
+            'deadline'=>$request->deadline,
+        ]);
+        $subTask->save();
     }
 
     /**
