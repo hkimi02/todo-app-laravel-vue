@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
+use App\Models\task;
 class itemController extends Controller{
     /**
      * Display a listing of the resource.
@@ -22,7 +22,7 @@ class itemController extends Controller{
      */
     public function create()
     {
-        //
+        return task::orderBy('created_at','DESC')->get();
     }
 
     /**
@@ -33,7 +33,10 @@ class itemController extends Controller{
      */
     public function store(Request $request)
     {
-        //
+        $newTask= new task;
+        $newTask->name=$request->task["name"];
+        $newTask->save();
+        return $newTask;
     }
 
     /**
