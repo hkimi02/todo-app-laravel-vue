@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\task;
 use Illuminate\Support\Carbon;
+use App\Http\Requests\StoreTaskRequest;
+use App\Http\Requests\updateTaskRequest;
 
 class itemController extends Controller{
     /**
@@ -37,14 +39,15 @@ class itemController extends Controller{
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreTaskRequest $request)
     {
         // $newTask= new task;
         // $newTask->name=$request->name;
         // $newTask->save();
-
+        $validatedReequest=$request->validated();
+        //$validated = $request->safe()->only(['name']);
         $newTask = task::create([
-            "name"=>$request->name
+            "name"=>$validatedReequest['name']
         ]);
         if ($newTask == null){
             return response()->json(null,400);
@@ -81,17 +84,18 @@ class itemController extends Controller{
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(updateTaskRequest $request, $id)
     {
         $excitingItem = task::find($id);
+        $validatedRequest=$request->validated();
         if($excitingItem){
             // $excitingItem->done=$request->task['done'] ? true : false;
             // $excitingItem->done_at=$request->task['done'] ? Carbon::now() : null;
             // $excitingItem->save();
 
             task::whereId($id)->update([
-                "done"=>$request->done ? true : false,
-                "done_at"=>$request->done ? Carbon::now() : null
+                "done"=>$validatedRequest['done'] ? true : false,
+                "done_at"=>$validatedRequest['done'] ? Carbon::now() : null
             ]);
             $excitingItem->save();
             return response()->json($excitingItem,200);
