@@ -14,7 +14,11 @@ class itemController extends Controller{
      */
     public function index()
     {
-        return task::orderBy('created_at','DESC')->get();
+        $tasks =  task::orderBy('created_at','DESC')->get();
+        if(empty($tasks)){
+            return response()->json([],404);
+        }
+        return response()->json($tasks,200);
     }
 
     /**
@@ -35,10 +39,17 @@ class itemController extends Controller{
      */
     public function store(Request $request)
     {
-        $newTask= new task;
-        $newTask->name=$request->task["name"];
-        $newTask->save();
-        return $newTask;
+        // $newTask= new task;
+        // $newTask->name=$request->name;
+        // $newTask->save();
+
+        $newTask = task::create([
+            "name"=>$request->name
+        ]);
+        if ($newTask == null){
+            return response()->json(null,400);
+        }
+        return response()->json($newTask,201);
     }
 
     /**
@@ -74,12 +85,18 @@ class itemController extends Controller{
     {
         $excitingItem = task::find($id);
         if($excitingItem){
-            $excitingItem->done=$request->task['done'] ? true : false;
-            $excitingItem->done_at=$request->task['done'] ? Carbon::now() : null;
+            // $excitingItem->done=$request->task['done'] ? true : false;
+            // $excitingItem->done_at=$request->task['done'] ? Carbon::now() : null;
+            // $excitingItem->save();
+
+            task::whereId($id)->update([
+                "done"=>$request->done ? true : false,
+                "done_at"=>$request->done ? Carbon::now() : null
+            ]);
             $excitingItem->save();
-            return $excitingItem;
+            return response()->json($excitingItem,200);
         }
-        return "task not found";
+        return response()->json("task not found",404);
     }
 
     /**
@@ -93,8 +110,8 @@ class itemController extends Controller{
         $excitingItem=task::find( $id );
         if( $excitingItem ){
             $excitingItem->delete();
-            return "task succesfuly deleted";
+            return response()->json("task succesfuly deleted",200);
         }
-        return "task not found";
+        return response()->json("task not found",404);
     }
 }
