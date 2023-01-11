@@ -92,7 +92,6 @@ class itemController extends Controller{
             // $excitingItem->done=$request->task['done'] ? true : false;
             // $excitingItem->done_at=$request->task['done'] ? Carbon::now() : null;
             // $excitingItem->save();
-
             task::whereId($id)->update([
                 "done"=>$validatedRequest['done'] ? true : false,
                 "done_at"=>$validatedRequest['done'] ? Carbon::now() : null
