@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\task;
+use Illuminate\Support\Carbon;
+
 class itemController extends Controller{
     /**
      * Display a listing of the resource.
@@ -12,7 +14,7 @@ class itemController extends Controller{
      */
     public function index()
     {
-        //
+        return task::orderBy('created_at','DESC')->get();
     }
 
     /**
@@ -22,7 +24,7 @@ class itemController extends Controller{
      */
     public function create()
     {
-        return task::orderBy('created_at','DESC')->get();
+
     }
 
     /**
@@ -70,7 +72,14 @@ class itemController extends Controller{
      */
     public function update(Request $request, $id)
     {
-        //
+        $excitingItem = task::find($id);
+        if($excitingItem){
+            $excitingItem->done=$request->task['done'] ? true : false;
+            $excitingItem->done_at=$request->task['done'] ? Carbon::now() : null;
+            $excitingItem->save();
+            return $excitingItem;
+        }
+        return "task not found";
     }
 
     /**
@@ -81,6 +90,11 @@ class itemController extends Controller{
      */
     public function destroy($id)
     {
-        //
+        $excitingItem=task::find( $id );
+        if( $excitingItem ){
+            $excitingItem->delete();
+            return "task succesfuly deleted";
+        }
+        return "task not found";
     }
 }
