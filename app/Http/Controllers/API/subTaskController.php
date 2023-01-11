@@ -14,9 +14,9 @@ class subTaskController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index($task_id)
     {
-        return SubTask::where('task_id', $request->task_id)->get();
+        return task::find($task_id)->with('subtasks')->get();
         // $task=task::find($request->id_task);
         // $subTasks=$task->children()->get();
         // return $subTasks;
@@ -28,13 +28,13 @@ class subTaskController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request,$task_id)
     {
-        $task=task::find($request->task_id);
-        $subTask=$task->children()->create([
+        $task=task::find($task_id);
+        $subTask=$task->subtasks()->save(new SubTask([
             'description'=>$request->description,
             'deadline'=>$request->deadline,
-        ]);
+        ]));
         $subTask->save();
     }
 

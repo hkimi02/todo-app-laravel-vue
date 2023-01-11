@@ -9,7 +9,7 @@ class task extends Model
 {
     use HasFactory;
     protected $fillable = ["name"];
-    public function children(){
-        $this->hasMany(SubTask::class,'task_id');
+    public function subtasks(){
+        return $this->hasMany(SubTask::class);
     }
 }
