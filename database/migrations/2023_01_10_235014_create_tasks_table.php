@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('name');
             $table->boolean('done')->default(false);
             $table->timestamp('done_at')->nullable();
+            $table->timestamp('duedate')->nullable();
             $table->timestamps();
         });
     }

@@ -12,12 +12,12 @@ class subTaskController extends Controller
 {
     /**
      * Display a listing of the resource.
-     *
      * @return \Illuminate\Http\Response
      */
     public function index($task_id)
-    { if(task::find($task_id)){
-        return response()->json(task::find($task_id)->with('subtasks')->get(),200);
+    {$task=task::find($task_id);
+    if($task){
+        return response()->json($task->with('subtasks')->get(),200);
     }
     else{
         return response()->json("not found",404);

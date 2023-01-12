@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class task extends Model
 {
     use HasFactory;
-    protected $fillable = ["name"];
+    protected $fillable = ["name","duedate"];
     public function subtasks(){
         return $this->hasMany(SubTask::class);
     }
