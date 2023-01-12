@@ -47,7 +47,8 @@ class itemController extends Controller{
         $validatedReequest=$request->validated();
         //$validated = $request->safe()->only(['name']);
         $newTask = task::create([
-            "name"=>$validatedReequest['name']
+            "name"=>$validatedReequest['name'],
+            "duedate"=>$validatedReequest['duedate'],
         ]);
         if ($newTask == null){
             return response()->json(null,400);

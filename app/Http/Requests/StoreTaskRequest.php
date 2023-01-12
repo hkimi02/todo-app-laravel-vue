@@ -25,6 +25,7 @@ class StoreTaskRequest extends FormRequest
     {
         return [
             'name' => 'required|unique:tasks|max:255',
+            'duedate'=>'required',
         ];
     }
 }

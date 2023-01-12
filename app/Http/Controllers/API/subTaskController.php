@@ -14,8 +14,8 @@ class subTaskController extends Controller
      * Display a listing of the resource.
      * @return \Illuminate\Http\Response
      */
-    public function index($task_id)
-    {$task=task::find($task_id);
+    public function index()
+    {$task=task::select('*');
     if($task){
         return response()->json($task->with('subtasks')->get(),200);
     }
