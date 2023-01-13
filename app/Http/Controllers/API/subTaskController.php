@@ -107,4 +107,14 @@ class subTaskController extends Controller
         }
         return response()->json("subtask not found",404);
     }
+    /**
+     * search by name task in storage
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function searchByName(Request $request){
+        $tasks=task::where('name','like','%'. $request->search .'%');
+        return $tasks;
+    }
 }

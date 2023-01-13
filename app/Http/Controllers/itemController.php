@@ -62,9 +62,13 @@ class itemController extends Controller{
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function gettaskbyid($id)
     {
-        //
+        $task=task::find($id);
+        if($task){
+            return response()->json($task,200);
+        }
+        return response()->json([],404);
     }
 
     /**
@@ -73,9 +77,18 @@ class itemController extends Controller{
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Request $request,$id)
     {
-        //
+        $excitingItem = task::find($id);
+        if($excitingItem){
+            $excitingItem->update([
+            "name"=>$request->name,
+            "duedate"=>$request->duedate,
+        ]);
+        $excitingItem->save();
+        return response()->json($excitingItem,200);
+    }
+    return response()->json("task not found",404);
     }
 
     /**
@@ -94,7 +107,7 @@ class itemController extends Controller{
             // $excitingItem->done_at=$request->task['done'] ? Carbon::now() : null;
             // $excitingItem->save();
             task::whereId($id)->update([
-                "done"=>$validatedRequest['done'] ? true : false,
+                "done"=>$validatedRequest['done'],
                 "done_at"=>$validatedRequest['done'] ? Carbon::now() : null
             ]);
             $excitingItem->save();
