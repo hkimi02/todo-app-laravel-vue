@@ -19,7 +19,7 @@ return new class extends Migration
             $table->foreignId('task_id')->constrained(
                 "tasks",
                 "id"
-            );
+            )->onDelete('cascade')->onUpdate('cascade');
             $table->string('description');
             $table->date('deadline');
             $table->boolean('status')->default(false);

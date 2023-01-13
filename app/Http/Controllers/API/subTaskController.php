@@ -15,9 +15,10 @@ class subTaskController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
-    {$task=task::select('*');
+    {
+        $task=task::with('subtasks')->get();
     if($task){
-        return response()->json($task->with('subtasks')->get(),200);
+        return response()->json($task,200);
     }
     else{
         return response()->json("not found",404);
@@ -58,7 +59,17 @@ class subTaskController extends Controller
     {
         //
     }
-
+        public function makeDone($id){
+            $excitingSubTask=SubTask::find($id);
+            if($excitingSubTask){
+                $excitingSubTask->update([
+                    "status"=>!($excitingSubTask->status),
+                ]);
+                $excitingSubTask->save();
+                return response()->json("status updated succesfully",200);
+                }
+                return response()->json("subtask not found",404);
+    }
     /**
      * Update the specified resource in storage.
      *

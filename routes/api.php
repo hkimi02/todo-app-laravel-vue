@@ -31,6 +31,7 @@ Route::prefix('/tasks/subtasks')->group( function(){
     Route::get('/', [subTaskController::class , 'index']);
     Route::post('/{id_task}',[subTaskController::class , 'store']);
     Route::put('/{id}',[subTaskController::class , 'update']);
+    Route::put('/{id}',[subTaskController::class , 'makeDone']);
     Route::delete('/{id}',[subTaskController::class , 'destroy']);
 });
 

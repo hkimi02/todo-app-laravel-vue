@@ -111,8 +111,9 @@ class itemController extends Controller{
      */
     public function destroy($id)
     {
-        $excitingItem=task::find( $id );
+        $excitingItem=task::find($id);
         if( $excitingItem ){
+            $excitingItem::with('subtasks')->delete();
             $excitingItem->delete();
             return response()->json("task succesfuly deleted",200);
         }
