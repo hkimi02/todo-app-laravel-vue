@@ -7,6 +7,7 @@ use App\Models\task;
 use Illuminate\Support\Carbon;
 use App\Http\Requests\StoreTaskRequest;
 use App\Http\Requests\updateTaskRequest;
+use Nette\Utils\Json;
 
 class itemController extends Controller{
     /**
@@ -131,5 +132,10 @@ class itemController extends Controller{
             return response()->json("task succesfuly deleted",200);
         }
         return response()->json("task not found",404);
+    }
+    public function searchByName(Request $request){
+        $searchName=$request->search;
+        $tasks=task::where('name',"LIKE","%". $searchName ."%")->with('subtasks')->get();
+        return response()->Json($tasks,200);
     }
 }

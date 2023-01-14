@@ -22,12 +22,14 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::prefix('/tasks/subtasks')->group( function(){
     Route::get('/', [subTaskController::class , 'index']);
-    Route::get('/search', [subTaskController::class , 'searchByName']);
     Route::post('/{id_task}',[subTaskController::class , 'store']);
-    Route::put('/{id}',[subTaskController::class , 'makeDone']);
+    Route::put('/done/{id}',[subTaskController::class , 'makeDone']);
+    Route::put('/{id}',[subTaskController::class , 'update']);
     Route::delete('/{id}',[subTaskController::class , 'destroy']);
 });
+
 Route::prefix('/tasks')->group( function(){
+    Route::get('/search', [itemController::class , 'searchByName']);
     Route::get('/{id}',[itemController::class , 'gettaskbyid']);
     Route::get('/', [itemController::class , 'index']);
     Route::post('/',[itemController::class , 'store']);

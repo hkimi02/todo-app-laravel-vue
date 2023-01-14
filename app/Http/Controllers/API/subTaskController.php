@@ -16,7 +16,7 @@ class subTaskController extends Controller
      */
     public function index()
     {
-        $task=task::with('subtasks')->get();
+        $task=task::with('subtasks')->paginate(2);
     if($task){
         return response()->json($task,200);
     }
@@ -59,7 +59,7 @@ class subTaskController extends Controller
     {
         //
     }
-        public function makeDone($id){
+    public function makeDone($id){
             $excitingSubTask=SubTask::find($id);
             if($excitingSubTask){
                 $excitingSubTask->update([
@@ -106,15 +106,5 @@ class subTaskController extends Controller
             return response()->json("subtask succesfuly deleted",200);
         }
         return response()->json("subtask not found",404);
-    }
-    /**
-     * search by name task in storage
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function searchByName(Request $request){
-        $tasks=task::where('name','like','%'. $request->search .'%');
-        return $tasks;
     }
 }
