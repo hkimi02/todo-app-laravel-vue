@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\API\subTaskController;
+use App\Http\Controllers\API\CategoriesController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\itemController;
@@ -18,7 +19,12 @@ use App\Http\Controllers\itemController;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
-
+Route::prefix('/categories')->group( function(){
+    Route::get('/', [CategoriesController::class , 'index']);
+    Route::post('/',[CategoriesController::class , 'store']);
+    Route::put('/{id}',[CategoriesController::class , 'update']);
+    Route::delete('/{id}',[CategoriesController::class , 'destroy']);
+});
 
 Route::prefix('/tasks/subtasks')->group( function(){
     Route::get('/', [subTaskController::class , 'index']);

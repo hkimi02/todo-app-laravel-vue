@@ -135,7 +135,10 @@ class itemController extends Controller{
     }
     public function searchByName(Request $request){
         $searchName=$request->search;
-        $tasks=task::where('name',"LIKE","%". $searchName ."%")->with('subtasks')->get();
+        $tasks=task::where('name',"LIKE","%". $searchName ."%")->with('subtasks')->paginate(3);
         return response()->Json($tasks,200);
     }
 }
+// php artisan make:controller API/TestController --api --model=Test
+// # then
+// php artisan make:migration create_tests_table
