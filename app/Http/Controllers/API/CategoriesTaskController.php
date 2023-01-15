@@ -26,7 +26,15 @@ class CategoriesTaskController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $newcategorytask=CategoriesTask::create([
+                "task_id"=>$request->task_id,
+                "categories_id"=>$request->category_id,
+            ]);
+        if($newcategorytask==null){
+            return response()->json('there has been a problem',400);
+        }
+        return response()->json('category added ', 201);
+
     }
 
     /**
