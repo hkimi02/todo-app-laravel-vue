@@ -1,11 +1,85 @@
 <template>
-  
+    <div class="container">
+        <div class="form shadow-lg">
+            <h3>add new task</h3>
+            <form method="post" @submit.prevent="addTask">
+                <div class="mb-3">
+                    <label for="task_name" class="form-label">task name</label>
+                    <input type="text" class="form-control" id="task_name" v-model="name">
+                </div>
+                <div class="mb-3">
+                    <label for="" class="form-label">due date</label>
+                    <input type="date" class="form-control" id="exampleInputPassword1" :min="min_date"
+                        v-model="duedate">
+                </div>
+                <h4 class="text-center">categories</h4>
+                <div class="form-check" v-for="category,index in categories">
+  <input class="form-check-input" type="radio" :value="category.id" id="flexCheckDefault" v-model="checked_categories[index]">
+  <label class="form-check-label" for="flexCheckDefault">{{category.name}}
+  </label>
+</div>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+        </div>
+    </div>
 </template>
 <script>
-export default{
-
+import taskService from '@/services/taskService';
+export default {
+    data() {
+        return {
+            min_date: null,
+            name: '',
+            duedate: null,
+            categories:[],
+            checked_categories:[],
+        }
+    },
+    methods: {
+        getCategories(){
+        taskService.GetCategories().then(response=>{
+        console.log(response.data);
+        this.categories=response.data;
+        })
+    },
+        addTask() {
+            let task = {
+                name: this.name,
+                duedate: this.duedate,
+            }
+            taskService.createTask(task).then(response => {
+                alert('item created');
+                for(let i=0;i<this.checked_categories.length;i++){
+                    let newaddcategory={
+                        task_id:response.data.id,
+                        category_id:this.checked_categories[i]
+                    }
+                    taskService.createrelation(newaddcategory).then(secondResponse => {
+                        console.log(secondResponse.data);
+                    })
+                }
+                this.$router.push('/');
+            })
+        }
+    },
+    created() {
+        this.min_date = new Date;
+        this.getCategories();
+    },
 }
 </script>
 <style scoped>
+.form {
+    height: 30rem;
+    width: 20rem;
+    margin-top: 10%;
+    padding: 5%;
+    justify-content: center;
+    text-align: center;
+}
 
+.container {
+    display: grid;
+    justify-content: center !important;
+}
 </style>
