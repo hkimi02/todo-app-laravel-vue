@@ -65,7 +65,7 @@ class itemController extends Controller{
      */
     public function gettaskbyid($id)
     {
-        $task=task::find($id);
+        $task=task::where('id','=',$id)->with('category')->get();
         if($task){
             return response()->json($task,200);
         }
