@@ -16,7 +16,7 @@ class subTaskController extends Controller
      */
     public function index()
     {
-        $task=task::with('subtasks','category')->paginate(5);
+        $task=task::with('subtasks','category')->paginate(3);
     if($task){
         return response()->json($task,200);
     }

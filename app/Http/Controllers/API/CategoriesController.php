@@ -47,9 +47,13 @@ class CategoriesController extends Controller
      * @param  \App\Models\Categories  $categories
      * @return \Illuminate\Http\Response
      */
-    public function show(Categories $categories)
+    public function show($id)
     {
-        //
+        $categorie =  Categories::find($id);
+        if(empty($categorie)){
+            return response()->json('task not found',404);
+        }
+        return response()->json($categorie,200);
     }
 
     /**
