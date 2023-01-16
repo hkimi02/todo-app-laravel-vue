@@ -66,8 +66,13 @@ class CategoriesTaskController extends Controller
      * @param  \App\Models\CategoriesTask  $categoriesTask
      * @return \Illuminate\Http\Response
      */
-    public function destroy(CategoriesTask $categoriesTask)
+    public function destroy($id)
     {
-        //
+        $excitingItem=CategoriesTask::find($id);
+        if( $excitingItem ){
+            $excitingItem->delete();
+            return response()->json("category unsaved",200);
+        }
+        return response()->json("not found",404);
     }
 }

@@ -135,7 +135,7 @@ class itemController extends Controller{
     }
     public function searchByName(Request $request){
         $searchName=$request->search;
-        $tasks=task::where('name',"LIKE","%". $searchName ."%")->with('subtasks')->paginate(3);
+        $tasks=task::where('name',"LIKE","%". $searchName ."%")->with('subtasks','category')->paginate(3);
         return response()->Json($tasks,200);
     }
 }
