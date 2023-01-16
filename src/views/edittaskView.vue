@@ -6,10 +6,12 @@
                 <div class="mb-3">
                     <label for="task_name" class="form-label">task name</label>
                     <input type="text" class="form-control" id="task_name" v-model="name">
+                    <p class="text-danger">{{ nameError }}</p>
                 </div>
                 <div class="mb-3">
                     <label for="" class="form-label">due date</label>
                     <input type="datetime" class="form-control" id="exampleInputPassword1" v-model="duedate">
+                    <p class="text-danger">{{ errorDuedate }}</p>
                 </div>
                 <button type="submit" class="btn btn-primary">Submit</button>
             </form>
@@ -27,6 +29,8 @@ export default {
             duedate: null,
             task: null,
             categories_table: [],
+            errorDuedate:'',
+            nameError:'',
         }
     },
     methods: {
@@ -50,6 +54,14 @@ export default {
             })
         },
         UpdateTask() {
+            if(this.name==''){
+                this.nameError='name feild cant be empty';
+                return ;
+            }
+            if(this.duedate==''){
+                this.errorDuedate='due date field cant be empty'
+                return ;
+            }
             let date = new Date(this.duedate);
             let isoDate = date.toISOString().slice(0, 10);
             console.log(isoDate);
@@ -59,9 +71,9 @@ export default {
             }
             taskService.updateTaskInfo(this.id, task).then(response => {
                 console.log(response.data);
-                this.$router.push('/');
-            }).catch((error) => {
-                console.log(error);
+                this.$router.push('/?msg=task updated succesfully&state=success');
+            }).catch(error=>{
+                    console.log(error);
             });
         }
     },
@@ -92,4 +104,4 @@ export default {
     display: grid;
     justify-content: center !important;
 }
-</style>
+</style> 

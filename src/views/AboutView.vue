@@ -6,15 +6,17 @@
                 <div class="mb-3">
                     <label for="task_name" class="form-label">task name</label>
                     <input type="text" class="form-control" id="task_name" v-model="name">
+                    <p class="text-danger">{{ nameError }}</p>
                 </div>
                 <div class="mb-3">
                     <label for="" class="form-label">due date</label>
                     <input type="date" class="form-control" id="exampleInputPassword1" :min="min_date"
                         v-model="duedate">
+                        <p class="text-danger">{{ errorDuedate }}</p>
                 </div>
                 <h4 class="text-center">categories</h4>
                 <div class="form-check" v-for="category,index in categories">
-  <input class="form-check-input" type="radio" :value="category.id" id="flexCheckDefault" v-model="checked_categories[index]">
+  <input class="form-check-input" type="checkbox"  id="flexCheckDefault" @click="check_category(category.id)">
   <label class="form-check-label" for="flexCheckDefault">{{category.name}}
   </label>
 </div>
@@ -33,9 +35,20 @@ export default {
             duedate: null,
             categories:[],
             checked_categories:[],
+            nameError:'',
+            errorDuedate:'',
         }
     },
     methods: {
+        check_category(id){
+                for(let i=0;i<this.checked_categories.length;i++){
+                    if(this.checked_categories[i]==id){
+                        this.checked_categories.splice(i,1);
+                        return;
+                    }
+                }
+                this.checked_categories[this.checked_categories.length]=id;
+        },
         getCategories(){
         taskService.GetCategories().then(response=>{
         console.log(response.data);
@@ -48,7 +61,7 @@ export default {
                 duedate: this.duedate,
             }
             taskService.createTask(task).then(response => {
-                alert('item created');
+                console.log(response.data);
                 for(let i=0;i<this.checked_categories.length;i++){
                     let newaddcategory={
                         task_id:response.data.id,
@@ -58,7 +71,11 @@ export default {
                         console.log(secondResponse.data);
                     })
                 }
-                this.$router.push('/');
+                this.$router.push('/?msg=task created succesfully&state=success');
+            }).catch(error=>{
+                    console.log(error.response.data.errors);
+                    this.nameError=error.response.data.errors.name[0];
+                    this.errorDuedate=error.response.data.errors.duedate[0];
             })
         }
     },

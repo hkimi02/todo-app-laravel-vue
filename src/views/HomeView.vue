@@ -1,16 +1,20 @@
 <template>
+  
     <div class="container mt-5">
       
       <AddTask @search-task="searchTask"></AddTask>
       <categories :categories="categories_table"></categories>
       <div class="tasks row">
         <h3>tasks</h3>
+        <div class="alert" :class="'alert-'+parametres.state">
+        {{ parametres.msg }}
+        </div>
           <div v-if="tasks.length==0">
             <h1 class="title">you have no current tasks </h1>
             <router-link to="about" class="btn btn-primary">add new task</router-link>
           </div>
           <div v-else v-for="task in tasks.data" :key="task.id" class="col-lg-4">
-            <HelloWorld :task="task" @refresh-subtasks="subtasks" @delete-task="Delete(task.id)" @update-task="Update"></HelloWorld>
+            <HelloWorld :task="task" @refresh-subtasks="subtasks" @delete-task="Delete(task.id)" @update-task="Update" @update-parametres="updateParemetres"></HelloWorld>
           </div>
         </div>
         <div class="pagination">
@@ -43,10 +47,14 @@ export default {
   data(){
     return{
       tasks:{},
-      categories_table:[]
+      categories_table:[],
+      parametres:null,
     }
   },
   methods:{
+    updateParemetres(newParemetres){
+      this.parametres=newParemetres;
+    },
     getCategories(){
       taskService.GetCategories().then(response=>{
         console.log(response.data);
@@ -70,8 +78,10 @@ export default {
       })
     },
     Delete(id){
+      console.log(id);
       taskService.deleteTask(id).then(response=>{
-        alert(response.data);
+        this.parametres.msg=response.data;
+        this.parametres.state='success';
         this.subtasks();
       });
     },
@@ -98,6 +108,8 @@ export default {
   created(){
     this.subtasks();
     this.getCategories();
+    console.log(this.$route.query);
+    this.parametres=this.$route.query;
   },
 }
 </script>
