@@ -9,7 +9,7 @@
         <div class="alert" :class="'alert-'+parametres.state">
         {{ parametres.msg }}
         </div>
-          <div v-if="tasks.length==0">
+          <div v-if="tasks.data==null">
             <h1 class="title">you have no current tasks </h1>
             <router-link to="about" class="btn btn-primary">add new task</router-link>
           </div>

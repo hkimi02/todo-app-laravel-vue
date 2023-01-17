@@ -12,14 +12,15 @@
                     <label for="" class="form-label">due date</label>
                     <input type="date" class="form-control" id="exampleInputPassword1" :min="min_date"
                         v-model="duedate">
-                        <p class="text-danger">{{ errorDuedate }}</p>
+                    <p class="text-danger">{{ errorDuedate }}</p>
                 </div>
                 <h4 class="text-center">categories</h4>
-                <div class="form-check" v-for="category,index in categories">
-  <input class="form-check-input" type="checkbox"  id="flexCheckDefault" @click="check_category(category.id)">
-  <label class="form-check-label" for="flexCheckDefault">{{category.name}}
-  </label>
-</div>
+                <div class="form-check" v-for="category, index in categories">
+                    <input class="form-check-input" type="checkbox" id="flexCheckDefault"
+                        @click="check_category(category.id)">
+                    <label class="form-check-label" for="flexCheckDefault">{{ category.name }}
+                    </label>
+                </div>
                 <button type="submit" class="btn btn-primary">Submit</button>
             </form>
         </div>
@@ -33,28 +34,28 @@ export default {
             min_date: null,
             name: '',
             duedate: null,
-            categories:[],
-            checked_categories:[],
-            nameError:'',
-            errorDuedate:'',
+            categories: [],
+            checked_categories: [],
+            nameError: '',
+            errorDuedate: '',
         }
     },
     methods: {
-        check_category(id){
-                for(let i=0;i<this.checked_categories.length;i++){
-                    if(this.checked_categories[i]==id){
-                        this.checked_categories.splice(i,1);
-                        return;
-                    }
+        check_category(id) {
+            for (let i = 0; i < this.checked_categories.length; i++) {
+                if (this.checked_categories[i] == id) {
+                    this.checked_categories.splice(i, 1);
+                    return;
                 }
-                this.checked_categories[this.checked_categories.length]=id;
+            }
+            this.checked_categories[this.checked_categories.length] = id;
         },
-        getCategories(){
-        taskService.GetCategories().then(response=>{
-        console.log(response.data);
-        this.categories=response.data;
-        })
-    },
+        getCategories() {
+            taskService.GetCategories().then(response => {
+                console.log(response.data);
+                this.categories = response.data;
+            })
+        },
         addTask() {
             let task = {
                 name: this.name,
@@ -62,20 +63,20 @@ export default {
             }
             taskService.createTask(task).then(response => {
                 console.log(response.data);
-                for(let i=0;i<this.checked_categories.length;i++){
-                    let newaddcategory={
-                        task_id:response.data.id,
-                        category_id:this.checked_categories[i]
+                for (let i = 0; i < this.checked_categories.length; i++) {
+                    let newaddcategory = {
+                        task_id: response.data.id,
+                        category_id: this.checked_categories[i]
                     }
                     taskService.createrelation(newaddcategory).then(secondResponse => {
                         console.log(secondResponse.data);
                     })
                 }
                 this.$router.push('/?msg=task created succesfully&state=success');
-            }).catch(error=>{
-                    console.log(error.response.data.errors);
-                    this.nameError=error.response.data.errors.name[0];
-                    this.errorDuedate=error.response.data.errors.duedate[0];
+            }).catch(error => {
+                console.log(error.response.data.errors);
+                this.nameError = error.response.data.errors.name[0];
+                this.errorDuedate = error.response.data.errors.duedate[0];
             })
         }
     },

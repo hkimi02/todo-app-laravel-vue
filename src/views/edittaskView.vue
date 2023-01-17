@@ -13,6 +13,12 @@
                     <input type="datetime" class="form-control" id="exampleInputPassword1" v-model="duedate">
                     <p class="text-danger">{{ errorDuedate }}</p>
                 </div>
+                <div class="form-check" v-for="category, index in categories_table">
+                    <input class="form-check-input" type="checkbox" id="flexCheckDefault" :checked="added_categories.indexOf(category.id)!=-1"
+                        @click="check_category(category.id)">
+                    <label class="form-check-label" for="flexCheckDefault">{{ category.name }}
+                    </label>
+                </div>
                 <button type="submit" class="btn btn-primary">Submit</button>
             </form>
         </div>
@@ -31,9 +37,29 @@ export default {
             categories_table: [],
             errorDuedate:'',
             nameError:'',
+            added_categories:[],
         }
     },
     methods: {
+        check_exist(id){
+                for(i=0;i<this.task.category.length;i++){
+                    if(id==this.task.category[i].id){
+                        return false;
+                    }
+                }
+                return true;
+        },
+        check_category(id) {
+            for (let i = 0; i < this.added_categories.length; i++) {
+                if (this.added_categories[i] == id) {
+                    this.added_categories.splice(i, 1);
+                    console.log(this.added_categories);
+                    return;
+                }
+            }
+            console.log(this.added_categories);
+            this.added_categories[this.added_categories.length] = id;
+        },
         splitAddedCategories() {
             console.log(this.categories_table);
             for (let i = 0; i < this.categories_table.length; i++) {
@@ -71,6 +97,17 @@ export default {
             }
             taskService.updateTaskInfo(this.id, task).then(response => {
                 console.log(response.data);
+                for (let i = 0; i < this.added_categories.length; i++) {
+                    if(this.check_category(this.added_categories[i])){
+                    let newaddcategory = {
+                        task_id: this.task.id,
+                        category_id: this.added_categories[i]
+                    }
+                    taskService.createrelation(newaddcategory).then(secondResponse => {
+                        console.log(secondResponse.data);
+                    })
+                }
+            }
                 this.$router.push('/?msg=task updated succesfully&state=success');
             }).catch(error=>{
                     console.log(error);
@@ -81,7 +118,10 @@ export default {
         console.log(this.id);
         taskService.getTaskWithId(this.id).then(response => {
             this.task = response.data[0];
-            console.log(this.task);
+            this.task.category.forEach(element => {
+                this.added_categories.push(element.pivot.categories_id)
+            });
+            console.log(this.added_categories);
             this.name = response.data[0].name;
             this.duedate = (new Date(response.data[0].duedate)).toLocaleDateString();
         })
