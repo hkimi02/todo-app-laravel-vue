@@ -7,6 +7,7 @@ use App\Models\task;
 use Illuminate\Support\Carbon;
 use App\Http\Requests\StoreTaskRequest;
 use App\Http\Requests\updateTaskRequest;
+use App\Models\CategoriesTask;
 use Nette\Utils\Json;
 
 class itemController extends Controller{

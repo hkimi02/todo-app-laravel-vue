@@ -66,9 +66,9 @@ class CategoriesTaskController extends Controller
      * @param  \App\Models\CategoriesTask  $categoriesTask
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request)
     {
-        $excitingItem=CategoriesTask::find($id);
+        $excitingItem=CategoriesTask::where('categories_id','=', $request->id)->where('task_id', '=' , $request->id_task);
         if( $excitingItem ){
             $excitingItem->delete();
             return response()->json("category unsaved",200);

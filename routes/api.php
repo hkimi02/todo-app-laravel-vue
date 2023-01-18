@@ -43,7 +43,7 @@ Route::prefix('/tasks')->group( function(){
     Route::get('/', [itemController::class , 'index']);
     Route::post('/',[itemController::class , 'store']);
     Route::post('/addcategory',[CategoriesTaskController::class , 'store']);
-    Route::delete('/deletecategory/{id}',[CategoriesTaskController::class , 'destroy']);
+    Route::delete('/deletecategory',[CategoriesTaskController::class , 'destroy']);
     Route::put('/updatestatus/{id}',[itemController::class , 'update']);
     Route::put('/{id}',[itemController::class , 'edit']);
     Route::delete('/{id}',[itemController::class , 'destroy']);
