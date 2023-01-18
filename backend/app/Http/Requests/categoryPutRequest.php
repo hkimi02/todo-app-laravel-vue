@@ -3,6 +3,8 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Contracts\Validation\Validator;
+use Illuminate\Http\Exceptions\HttpResponseException;
 
 class categoryPutRequest extends FormRequest
 {
@@ -26,5 +28,10 @@ class categoryPutRequest extends FormRequest
         return [
             'name'=>'required|max:255',
         ];
+    }
+
+    public function failedValidation(Validator $validator)
+    {
+        throw new HttpResponseException(response()->json(["errors"=>$validator->errors()],400));
     }
 }

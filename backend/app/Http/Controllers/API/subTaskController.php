@@ -15,9 +15,10 @@ class subTaskController extends Controller
      * Display a listing of the resource.
      * @return \Illuminate\Http\Response
      */
-    public function index($id)
+    public function index(Request $req)
     {
-        $task=task::where('user_id','=',$id)->with('subtasks','category')->paginate(3);
+        // $task = $req->user()->tasks()->with('subtasks','category')->paginate(3);
+        $task=task::where('user_id','=',auth()->user()->id)->with('subtasks','category')->paginate(3);
     if($task){
         return response()->json($task,200);
     }

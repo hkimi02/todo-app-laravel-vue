@@ -22,6 +22,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::middleware('auth:sanctum')->group(function(){
+
 Route::prefix('/categories')->group( function(){
     Route::get('/', [CategoriesController::class , 'index']);
     Route::get('/{id}', [CategoriesController::class , 'show']);
@@ -30,8 +32,8 @@ Route::prefix('/categories')->group( function(){
     Route::delete('/{id}',[CategoriesController::class , 'destroy']);
 });
 
-Route::prefix('/tasks/subtasks')->group( function(){
-    Route::get('/{id}', [subTaskController::class , 'index']);
+Route::prefix('/subtasks')->group( function(){
+    Route::get('/', [subTaskController::class , 'index']);
     Route::post('/{id_task}',[subTaskController::class , 'store']);
     Route::put('/done/{id}',[subTaskController::class , 'makeDone']);
     Route::put('/{id}',[subTaskController::class , 'update']);
@@ -42,7 +44,7 @@ Route::prefix('/tasks')->group( function(){
     Route::get('/search', [itemController::class , 'searchByName']);
     Route::get('/{id}',[itemController::class , 'gettaskbyid']);
     Route::get('/', [itemController::class , 'index']);
-    Route::post('/{id}',[itemController::class , 'store']);
+    Route::post('/',[itemController::class , 'store']);
     Route::post('/addcategory',[CategoriesTaskController::class , 'store']);
     Route::delete('/deletecategory',[CategoriesTaskController::class , 'destroy']);
     Route::put('/updatestatus/{id}',[itemController::class , 'update']);
@@ -50,9 +52,11 @@ Route::prefix('/tasks')->group( function(){
     Route::delete('/{id}',[itemController::class , 'destroy']);
 });
 
+
+
+});
+
 Route::prefix('/users')->group(function(){
     Route::post('/signUp',[UserController::class, 'store']);
     Route::post('/logIn',[UserController::class, 'login']);
 });
-
-

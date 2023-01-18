@@ -8,7 +8,7 @@ use App\Models\User;
 class task extends Model
 {
     use HasFactory;
-    protected $fillable = ["name","duedate"];
+    protected $fillable = ["name","duedate","user_id"];
     public function subtasks(){
         return $this->hasMany(SubTask::class);
     }
@@ -16,7 +16,7 @@ class task extends Model
     {
         return $this->belongsToMany(Categories::class, 'categoriestask');
     }
-    public function task(){
+    public function user(){
         return $this->belongsTo(User::class,'users');
     }
 }

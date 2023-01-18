@@ -16,7 +16,7 @@ class itemController extends Controller{
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         $tasks =  task::orderBy('created_at','DESC')->get();
         if(empty($tasks)){
@@ -43,14 +43,11 @@ class itemController extends Controller{
      */
     public function store(StoreTaskRequest $request)
     {
-        // $newTask= new task;
-        // $newTask->name=$request->name;
-        // $newTask->save();
         $validatedReequest=$request->validated();
-        //$validated = $request->safe()->only(['name']);
         $newTask = task::create([
             "name"=>$validatedReequest['name'],
             "duedate"=>$validatedReequest['duedate'],
+            "user_id"=>auth()->user()->id
         ]);
         if ($newTask == null){
             return response()->json(null,400);

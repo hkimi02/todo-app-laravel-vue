@@ -3,6 +3,8 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Contracts\Validation\Validator;
+use Illuminate\Http\Exceptions\HttpResponseException;
 
 class StoresubtaskRequest extends FormRequest
 {
@@ -27,5 +29,10 @@ class StoresubtaskRequest extends FormRequest
             'description' => 'required|max:1000',
             'deadline'=>'required',
         ];
+    }
+
+    public function failedValidation(Validator $validator)
+    {
+        throw new HttpResponseException(response()->json(["errors"=>$validator->errors()],400));
     }
 }
