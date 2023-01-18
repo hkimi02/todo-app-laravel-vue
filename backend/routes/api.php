@@ -3,6 +3,7 @@
 use App\Http\Controllers\API\subTaskController;
 use App\Http\Controllers\API\CategoriesController;
 use App\Http\Controllers\API\CategoriesTaskController;
+use App\Http\Controllers\API\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\itemController;
@@ -47,6 +48,11 @@ Route::prefix('/tasks')->group( function(){
     Route::put('/updatestatus/{id}',[itemController::class , 'update']);
     Route::put('/{id}',[itemController::class , 'edit']);
     Route::delete('/{id}',[itemController::class , 'destroy']);
+});
+
+Route::prefix('/users')->group(function(){
+    Route::post('/signUp',[UserController::class, 'store']);
+    Route::post('/logIn',[UserController::class, 'login']);
 });
 
 
