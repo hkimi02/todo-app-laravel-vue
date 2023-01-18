@@ -6,8 +6,8 @@
       <categories :categories="categories_table"></categories>
       <div class="tasks row">
         <h3>tasks</h3>
-        <div class="alert" :class="'alert-'+parametres.state">
-        {{ parametres.msg }}
+        <div class="alert" :class="'alert-'+parametres.state" v-if="parametres!=null">
+        {{ parametres.msg}} <i class='bi bi-x-lg float-end close-btn' @click="hideAlert"></i> 
         </div>
           <div v-if="tasks.data==null">
             <h1 class="title">you have no current tasks </h1>
@@ -52,6 +52,9 @@ export default {
     }
   },
   methods:{
+    hideAlert(){
+      this.parametres=null;
+    },
     updateParemetres(newParemetres){
       this.parametres=newParemetres;
     },

@@ -63,5 +63,8 @@ export default {
     },
     createrelation(newaddcategory) {
         return axios.post('http://localhost:8000/api/tasks/addcategory', newaddcategory);
+    },
+    destroyRelation(id, task_id) {
+        return axios.delete('http://localhost:8000/api/tasks/deletecategory?id=' + id + "&id_task=" + task_id);
     }
 }

@@ -14,8 +14,8 @@
                     <p class="text-danger">{{ errorDuedate }}</p>
                 </div>
                 <div class="form-check" v-for="category, index in categories_table">
-                    <input class="form-check-input" type="checkbox" id="flexCheckDefault" :checked="added_categories.indexOf(category.id)!=-1"
-                        @click="check_category(category.id)">
+                    <input class="form-check-input" type="checkbox" id="flexCheckDefault"
+                        :checked="added_categories.indexOf(category.id) != -1" @click="check_category(category.id)">
                     <label class="form-check-label" for="flexCheckDefault">{{ category.name }}
                     </label>
                 </div>
@@ -35,20 +35,12 @@ export default {
             duedate: null,
             task: null,
             categories_table: [],
-            errorDuedate:'',
-            nameError:'',
-            added_categories:[],
+            errorDuedate: '',
+            nameError: '',
+            added_categories: [],
         }
     },
     methods: {
-        check_exist(id){
-                for(i=0;i<this.task.category.length;i++){
-                    if(id==this.task.category[i].id){
-                        return false;
-                    }
-                }
-                return true;
-        },
         check_category(id) {
             for (let i = 0; i < this.added_categories.length; i++) {
                 if (this.added_categories[i] == id) {
@@ -59,18 +51,7 @@ export default {
             }
             console.log(this.added_categories);
             this.added_categories[this.added_categories.length] = id;
-        },
-        splitAddedCategories() {
-            console.log(this.categories_table);
-            for (let i = 0; i < this.categories_table.length; i++) {
-                for (let j = 0; j < this.task.category.length; j++) {
-                    console.log(this.task.category[j].pivot.categories_id);
-                    console.log(this.categories_table[i].id);
-                    if (this.categories_table[i].id == this.task.category[j].pivot.categories_id) {
-                        this.categories_table.splice(i, 1);
-                    }
-                }
-            }
+            console.log(this.added_categories);
         },
         getCategories() {
             taskService.GetCategories().then(response => {
@@ -97,8 +78,14 @@ export default {
             }
             taskService.updateTaskInfo(this.id, task).then(response => {
                 console.log(response.data);
+                for(let i=0;i<this.task.category.length;i++){
+                    console.log(this.task.category[i]);
+                    taskService.destroyRelation(this.task.category[i].id,this.task.id).then(thirdresponse => {
+                        console.log(thirdresponse.data);
+                    })
+                }
                 for (let i = 0; i < this.added_categories.length; i++) {
-                    if(this.check_category(this.added_categories[i])){
+                    if(this.added_categories[i]){
                     let newaddcategory = {
                         task_id: this.task.id,
                         category_id: this.added_categories[i]
@@ -118,15 +105,14 @@ export default {
         console.log(this.id);
         taskService.getTaskWithId(this.id).then(response => {
             this.task = response.data[0];
-            this.task.category.forEach(element => {
-                this.added_categories.push(element.pivot.categories_id)
-            });
+            for(let i=0;i<this.task.category.length;i++){
+                this.added_categories.push(this.task.category[i].id);
+            }
             console.log(this.added_categories);
             this.name = response.data[0].name;
             this.duedate = (new Date(response.data[0].duedate)).toLocaleDateString();
         })
         this.getCategories();
-        //this.splitAddedCategories();
     }
 }
 </script>
