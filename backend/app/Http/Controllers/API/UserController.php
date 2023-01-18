@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-
+use App\Http\Requests\userRegisterRequest;
 class UserController extends Controller
 {
     /**
@@ -34,16 +34,17 @@ class UserController extends Controller
         if(Auth::attempt($infos)){
             $isAuth=true;
             $user='user loaged in succesfully';
-            return response()->json(['isAuth'=>true,'user'=>'user loaged in succesfully'],200);
+            return response()->json(['isAuth'=>true,'message'=>'user loaged in succesfully','user'=>auth()->user()],200);
         }
-        return response()->json(['isAuth'=>false,'user'=>'unautharised'],404);
+        return response()->json(['isAuth'=>false,'message'=>'unautharised'],404);
     }
-    public function store(Request $request)
+    public function store(userRegisterRequest $request)
     {
+        $validatedRequest=$request->validated();
         $newUser=User::create([
-            'name'=>$request->name,
-            'email'=>$request->email,
-            'password'=>Hash::make($request->password)
+            'name'=>$validatedRequest['name'],
+            'email'=>$validatedRequest['email'],
+            'password'=>Hash::make($validatedRequest['password'])
         ]);
         $newUser->save();
         if($newUser){
