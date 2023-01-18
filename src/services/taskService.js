@@ -66,5 +66,8 @@ export default {
     },
     destroyRelation(id, task_id) {
         return axios.delete('http://localhost:8000/api/tasks/deletecategory?id=' + id + "&id_task=" + task_id);
+    },
+    signUpUser(newUser) {
+        return axios.post('http://localhost:8000/api/users/signUp', newUser);
     }
 }

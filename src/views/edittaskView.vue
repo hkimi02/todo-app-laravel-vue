@@ -37,7 +37,7 @@ export default {
             categories_table: [],
             errorDuedate: '',
             nameError: '',
-            added_categories: [],
+            added_categories: [],   
         }
     },
     methods: {

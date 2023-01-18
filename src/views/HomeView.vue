@@ -31,7 +31,7 @@ import { Bootstrap5Pagination } from 'laravel-vue-pagination';
 </script>
 <script>
 // @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue'
+import HelloWorld from '@/components/HelloWorld.vue';
 import taskService from '@/services/taskService';
 import AddTask from '@/components/AddTask.vue';
 import categories from '@/components/categories.vue';
