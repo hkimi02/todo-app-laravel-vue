@@ -48,14 +48,16 @@ export default {
         }
     },
     methods:{
-
-         login(){
-            let response= authService.login({email:email.value,password:password.value});
-            if(response){
-                this.$router.push('/');
-            }else{
-                this.error='smthng went wrong';
-            }
+    login(){
+            authService.login({email:email.value,password:password.value}).then(()=>{
+                this.$router.push('/home');
+            });
+            // if(response){
+            //     console.log(response);
+            //     this.$router.push('/');
+            // }else{
+            //     this.error='smthng went wrong';
+            // }
         }
     }
    

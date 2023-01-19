@@ -1,5 +1,5 @@
 <template>
-    <nav class="navbar navbar-expand-lg bg-light shadow-lg">
+    <nav class="navbar navbar-expand-lg bg-light shadow-lg" v-if="store.IsAuth">
   <div class="container-fluid">
     <a class="navbar-brand" href="#">todoapp</a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -16,6 +16,9 @@
         <li class="nav-item">
           <router-link class="nav-link" to="/categoriesManager">manage categories</router-link>
         </li>
+        <li class="nav-item" @click="logout()" v-if="store.IsAuth">
+            logout
+        </li>
       </ul>
     </div>
   </div>
@@ -23,7 +26,28 @@
   
   <router-view/>
 </template>
+<script>
+import { useAuthStore } from '@/store/auth.store';
+export default{
+    data(){
+      return{
 
+      }
+    },
+    methods:{
+        logout(){
+          this.store.logout();
+          this.$router.push('/');
+        }
+    },
+    setup(){
+          const store=useAuthStore();
+          return {
+            store
+          }
+    }
+}
+</script>
 <style>
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;

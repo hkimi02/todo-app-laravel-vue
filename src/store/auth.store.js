@@ -8,7 +8,7 @@ export const useAuthStore = defineStore('auth', () => {
 
     const getUser = computed(() => user.value);
     const getToken = computed(() => token.value);
-    const IsAuth = computed(() => { isAuth.value });
+    const IsAuth = computed(() => isAuth.value);
 
     function login(t, u) {
         token.value = t;
@@ -25,5 +25,9 @@ export const useAuthStore = defineStore('auth', () => {
         localStorage.removeItem('user');
         localStorage.removeItem('Isadmin');
     }
-    return { token, user, isAuth, login, logout, getUser, getToken, IsAuth }
+
+    function getIsAuth() {
+        return isAuth.value;
+    }
+    return { token, user, isAuth, login, logout, getUser, getToken, IsAuth, getIsAuth }
 })
