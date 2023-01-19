@@ -8,6 +8,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Requests\userRegisterRequest;
+use Illuminate\Support\Str;
 class UserController extends Controller
 {
     /**
@@ -33,10 +34,21 @@ class UserController extends Controller
         ];
         if(Auth::attempt($infos)){
             $isAuth=true;
-            $user='user loaged in succesfully';
-            return response()->json(['isAuth'=>true,'message'=>'user loaged in succesfully','user'=>auth()->user()],200);
+            $user=auth()->user();
+            $token=$user->createToken('api_token')->plainTextToken;
+            $response=[
+                'isAuth'=>true,
+                'message'=>'user loaged in succesfully',
+                'user'=>auth()->user(),
+                'token'=>$token,
+            ];
+            return response()->json($response,200);
         }
-        return response()->json(['isAuth'=>false,'message'=>'unautharised'],404);
+        $response=[
+            'isAuth'=>false,
+            'message'=>'unautharised'
+        ];
+        return response()->json($response,404);
     }
     public function store(userRegisterRequest $request)
     {

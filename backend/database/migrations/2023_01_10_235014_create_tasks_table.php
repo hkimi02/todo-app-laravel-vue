@@ -16,6 +16,10 @@ return new class extends Migration
         Schema::create('tasks', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->foreignId('user_id')->constrained(
+                "users",
+                "id"
+            )->onDelete('cascade')->onUpdate('cascade');
             $table->boolean('done')->default(false);
             $table->timestamp('done_at')->nullable();
             $table->timestamp('duedate')->nullable();

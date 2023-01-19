@@ -31,7 +31,7 @@ Route::prefix('/categories')->group( function(){
 });
 
 Route::prefix('/tasks/subtasks')->group( function(){
-    Route::get('/', [subTaskController::class , 'index']);
+    Route::get('/{id}', [subTaskController::class , 'index']);
     Route::post('/{id_task}',[subTaskController::class , 'store']);
     Route::put('/done/{id}',[subTaskController::class , 'makeDone']);
     Route::put('/{id}',[subTaskController::class , 'update']);
@@ -42,7 +42,7 @@ Route::prefix('/tasks')->group( function(){
     Route::get('/search', [itemController::class , 'searchByName']);
     Route::get('/{id}',[itemController::class , 'gettaskbyid']);
     Route::get('/', [itemController::class , 'index']);
-    Route::post('/',[itemController::class , 'store']);
+    Route::post('/{id}',[itemController::class , 'store']);
     Route::post('/addcategory',[CategoriesTaskController::class , 'store']);
     Route::delete('/deletecategory',[CategoriesTaskController::class , 'destroy']);
     Route::put('/updatestatus/{id}',[itemController::class , 'update']);

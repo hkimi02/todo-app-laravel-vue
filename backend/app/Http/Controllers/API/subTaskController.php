@@ -8,15 +8,16 @@ use Illuminate\Http\Request;
 use App\Http\Requests\StoresubtaskRequest;
 use App\Http\Requests\updatesubtaskRequest;
 use App\Models\task;
+use App\Models\User;
 class subTaskController extends Controller
 {
     /**
      * Display a listing of the resource.
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($id)
     {
-        $task=task::with('subtasks','category')->paginate(3);
+        $task=task::where('user_id','=',$id)->with('subtasks','category')->paginate(3);
     if($task){
         return response()->json($task,200);
     }
