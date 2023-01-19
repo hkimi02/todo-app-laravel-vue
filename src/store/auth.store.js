@@ -1,0 +1,29 @@
+import router from "@/router";
+import { defineStore } from "pinia"
+import { computed, ref } from "vue";
+export const useAuthStore = defineStore('auth', () => {
+    const token = ref(localStorage.getItem('token') != null ? localStorage.getItem('token') : null);
+    const user = ref(localStorage.getItem('user') != null ? JSON.parse(localStorage.getItem('user')) : null);
+    const isAuth = ref((localStorage.getItem('user') && localStorage.getItem('token')));
+
+    const getUser = computed(() => user.value);
+    const getToken = computed(() => token.value);
+    const IsAuth = computed(() => { isAuth.value });
+
+    function login(t, u) {
+        token.value = t;
+        user.value = u;
+        isAuth.value = true;
+        localStorage.setItem('token', t);
+        localStorage.setItem('user', JSON.stringify(u));
+    }
+
+    function logout() {
+        isAuth.value = false;
+        token.value = null;
+        user.value = null;
+        localStorage.removeItem('user');
+        localStorage.removeItem('Isadmin');
+    }
+    return { token, user, isAuth, login, logout, getUser, getToken, IsAuth }
+})

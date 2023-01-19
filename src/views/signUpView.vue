@@ -27,12 +27,15 @@
                                     <input type="password" class="form-control" id="password" v-model="password">
                                     <p class="text-danger" v-if="passwordError">{{ passwordError[0] }}</p>
                                 </div>
+                                <div class="form-group mt-2">
                                 <button type="submit" class="btn btn-primary">Sign Up</button>
+                                </div>
                             </form>
                         </div>
                     </div>
                 </div>
             </div>
+            <h3>you have an account <router-link to="/">Log in</router-link></h3>
         </div>
 </template>
 <script>
